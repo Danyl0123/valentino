@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Будь моей валентинкой ❤️" />
+    <title id="title">{{title}}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="section">
+        <div class="section__date">
+          <img
+            src="assets/me.jpeg"
+            alt="романтическая анимация"
+            class="section__date-img"
+            id="date-img"
+          />
+          <p class="section__date-question" id="question">
+            Ты будешь моей валентинкой? 💝
+          </p>
+          <div class="section__date-answers">
+            <button class="section__date-btn confirm" id="confirm">
+              Да, с удовольствием! 💕
+            </button>
+            <button class="section__date-btn deny" id="deny">Нет.</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const title = "Valentinka 💕";
+    const titleHeader = document.getElementById("title");
+    titleHeader.textContent = title;
+
+    const question = document.getElementById("question");
+    const denyBtn = document.getElementById("deny");
+    const confirmBtn = document.getElementById("confirm");
+    const img = document.getElementById("date-img");
+
+    img.onerror = function () {
+      this.style.display = "none";
+    };
+
+    let buttonMoved = false;
+
+    const btnClick = (val) => {
+      if (val === "No") {
+        if (!buttonMoved) {
+          document.body.appendChild(denyBtn);
+        }
+
+        const randomLeft = Math.floor(Math.random() * 70 + 15) + "%";
+        const randomTop = Math.floor(Math.random() * 70 + 15) + "%";
+
+        denyBtn.style.position = "fixed";
+        denyBtn.style.transition = "all 0.3s ease";
+        denyBtn.style.left = randomLeft;
+        denyBtn.style.top = randomTop;
+        denyBtn.style.transform = "translate(-50%, -50%)";
+        denyBtn.style.zIndex = "999999";
+
+        if (!buttonMoved) {
+          question.textContent = "Дурак???? 😤";
+          img.src = "assets/панчи.gif";
+          img.style.animation = "none";
+          question.classList.add("shake");
+          setTimeout(() => question.classList.remove("shake"), 500);
+          buttonMoved = true;
+          setTimeout(() => {
+            img.style.animation = "";
+          }, 10);
+        }
+      }
+
+      if (val === "Yes") {
+        question.textContent = "Ура!💖✨";
+        img.src = "assets/sweet-kiss.gif";
+
+        createHearts();
+
+        denyBtn.style.display = "none";
+
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = "0.7";
+      }
+    };
+
+    function createHearts() {
+      const hearts = ["💕", "💖", "💗", "💓", "💝", "💘", "❤️"];
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const heart = document.createElement("div");
+          heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          heart.style.position = "fixed";
+          heart.style.left = Math.random() * 100 + "%";
+          heart.style.top = "100%";
+          heart.style.fontSize = "2rem";
+          heart.style.pointerEvents = "none";
+          heart.style.zIndex = "1000";
+          heart.style.transition = "all 3s ease-out";
+          document.body.appendChild(heart);
+
+          setTimeout(() => {
+            heart.style.top = "-10%";
+            heart.style.opacity = "0";
+            heart.style.transform = "translateY(-100px) rotate(360deg)";
+          }, 50);
+
+          setTimeout(() => {
+            document.body.removeChild(heart);
+          }, 3000);
+        }, i * 100);
+      }
+    }
+
+    denyBtn.addEventListener("mouseenter", () => {
+      if (buttonMoved) {
+        btnClick("No");
+      }
+    });
+
+    denyBtn.addEventListener("click", () => {
+      btnClick("No");
+    });
+
+    confirmBtn.addEventListener("click", () => btnClick("Yes"));
+  </script>
+</html>
